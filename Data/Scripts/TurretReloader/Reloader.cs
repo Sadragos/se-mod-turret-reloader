@@ -46,6 +46,7 @@ namespace TurretReloader
         private bool Transported = false;
         private int AmmoCount;
         private Vector3D EffectPosition = Vector3D.Zero;
+        private MyResourceSinkComponent resourceSink;
 
         private MyObjectBuilder_AmmoMagazine MagNew = new MyObjectBuilder_AmmoMagazine() { SubtypeName = "RapidFireAutomaticRifleGun_Mag_50rd" };
         private MyObjectBuilder_AmmoMagazine MagOld = new MyObjectBuilder_AmmoMagazine() { SubtypeName = "NATO_5p56x45mm" };
@@ -59,6 +60,14 @@ namespace TurretReloader
             TerminalBlock = (Sandbox.ModAPI.IMyFunctionalBlock)Entity;
             TerminalBlock.AppendingCustomInfo += AppendingCustomInfo;
             MyLog.Default.WriteLine("TurretReloader: DEBUG init");
+
+            resourceSink = TerminalBlock.ResourceSink as MyResourceSinkComponent;
+            if (resourceSink != null)
+            {
+                resourceSink.SetMaxRequiredInputByType(ElectricityId, POWER_WORK);
+                resourceSink.SetRequiredInputFuncByType(ElectricityId, ComputeRequiredElectricPower);
+                resourceSink.Update();
+            }
         }
 
 
@@ -128,12 +137,12 @@ namespace TurretReloader
         {
             if (TerminalBlock != null && TerminalBlock.IsFunctional && TerminalBlock.Enabled)
             {
+                IMyInventory inven = TerminalBlock.GetInventory(0);
+                int MagCountNew = (int)inven.GetItemAmount(MagNew);
+                int MagCountOld = (int)inven.GetItemAmount(MagOld);
+                AmmoCount = MagCountNew + MagCountOld;
                 if (MyAPIGateway.Multiplayer.IsServer)
                 {
-                    IMyInventory inven = TerminalBlock.GetInventory(0);
-                    int MagCountNew = (int)inven.GetItemAmount(MagNew);
-                    int MagCountOld = (int)inven.GetItemAmount(MagOld);
-                    AmmoCount = MagCountNew + MagCountOld;
                     Transported = false;
                     if (AmmoCount > 0)
                     {
@@ -168,17 +177,9 @@ namespace TurretReloader
                             }
                         }
                     }
-
-
-                    var resourceSink = TerminalBlock.ResourceSink as MyResourceSinkComponent;
-                    if (resourceSink != null)
-                    {
-                        resourceSink.SetMaxRequiredInputByType(ElectricityId, POWER_WORK);
-                        resourceSink.SetRequiredInputFuncByType(ElectricityId, ComputeRequiredElectricPower);
-                        resourceSink.Update();
-                    }
                 }
             }
+            resourceSink.Update();
             TerminalBlock.RefreshCustomInfo();
             RefreshControls(TerminalBlock);
         }
