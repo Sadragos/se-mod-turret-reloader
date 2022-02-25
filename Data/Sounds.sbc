@@ -1,0 +1,26 @@
+﻿<?xml version="1.0"?>
+<Definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <Sounds>
+
+    <Sound>
+      <Id>
+        <TypeId>MyObjectBuilder_AudioDefinition</TypeId>
+        <SubtypeId>AmmoTeleport</SubtypeId>
+      </Id>
+      <Category>SHOT</Category>
+      <MaxDistance>20</MaxDistance>
+      <PreventSynchronization>0</PreventSynchronization>
+      <Volume>0.75</Volume>
+      <SoundLimit>4</SoundLimit>
+      <Waves>
+        <Wave Type="D3">
+          <Start>Audio\warp.wav</Start>
+        </Wave>
+      </Waves>
+    </Sound>
+
+
+  </Sounds>
+  
+</Definitions>

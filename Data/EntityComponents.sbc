@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   
+    <EntityComponents>
+        <EntityComponent xsi:type="MyObjectBuilder_InventoryComponentDefinition">
+            <Id>
+                <TypeId>Inventory</TypeId>
+                <SubtypeId>TurretReloader</SubtypeId>
+            </Id>
+            <Volume>0.2</Volume>
+            <InputConstraint IsWhitelist="true">
+              <Entry>
+                <TypeId>AmmoMagazine</TypeId>
+                <SubtypeId>NATO_5p56x45mm</SubtypeId>
+              </Entry>
+              <Entry>
+                <TypeId>AmmoMagazine</TypeId>
+                <SubtypeId>RapidFireAutomaticRifleGun_Mag_50rd</SubtypeId>
+              </Entry>
+            </InputConstraint>
+        </EntityComponent>
+    </EntityComponents>
+</Definitions>
